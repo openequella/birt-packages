@@ -1,0 +1,113 @@
+plugins {
+  id 'base'
+  id 'maven-publish'
+}
+
+group 'com.github.openequella'
+version '4.9.0'
+
+final frameworkFolder = file("./framework")
+final osgiJarFolder = file("../birt-osgi/osgi/ReportEngine/platform/plugins")
+
+final originalFile = file("framework.zip")
+
+final artifactName = "${project.name}-${project.version}.zip"
+
+task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
+  doFirst {
+    println("Download the original BIRT Report Framework package")
+    new URL("https://download.eclipse.org/birt/downloads/drops/R-R1-4.9.0-202203161719/birt-report-framework-4.9.0-20220315.zip").withInputStream {
+      originalFile << it
+    }
+
+    println("Unzip the BIRT Report Framework package")
+    copy {
+      from zipTree(originalFile).matching {
+        include 'plugins/*.jar'
+        eachFile { f ->
+          f.path = f.path.replaceFirst("plugins", '')
+        }
+        includeEmptyDirs = false
+      }
+      into frameworkFolder
+    }
+
+    println("Copy required Jars from the BIRT OSGI package")
+    [
+      'org.eclipse.datatools.connectivity.oda_3.6.101.201811012051.jar',
+      'org.eclipse.datatools.connectivity.oda.consumer_3.4.101.201811012051.jar',
+      'org.eclipse.equinox.common_3.16.0.v20220211-2322.jar',
+      'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar',
+      'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar',
+      'org.apache.batik.i18n_1.14.0.v20210324-0332.jar',
+      'org.eclipse.osgi_3.17.200.v20220215-2237.jar'
+    ].each {
+      f ->
+        copy {
+          from osgiJarFolder
+          include f
+          into frameworkFolder
+        }
+    }
+
+    println("Extract Tidy.jar from one of the Report Engine Jars and copy to here")
+    copy {
+      from zipTree(file("${osgiJarFolder}/org.eclipse.birt.report.engine_4.9.0.v202203150031.jar")).matching {
+        include 'lib/Tidy.jar'
+        eachFile { f ->
+          f.path = f.path.replaceFirst("lib", '') // Only copy the Jar, not the folder.
+        }
+        includeEmptyDirs = false
+      }
+      into file(frameworkFolder)
+    }
+
+    println("Delete Jar 'javax.xml' which is not compatible with oEQ")
+    file("${frameworkFolder}/javax.xml_1.3.4.v201005080400.jar").delete()
+  }
+}
+
+task buildBirtReportFramework(description: 'Create the openEquella specific BIRT Report Framework', type: Zip) {
+  archiveName artifactName
+  from fileTree(frameworkFolder)
+  destinationDir file("./")
+
+  doLast {
+    println("BIRT Report Framework has been successfully created.")
+  }
+}
+
+buildBirtReportFramework.dependsOn(prepareBirtReportFramework)
+
+publishing {
+  publications {
+    birtReportFramework(MavenPublication) {
+      artifact artifactName
+      pom {
+        name = 'BIRT Report Framework'
+        packaging = 'zip'
+        description = 'BIRT Report Framework for openEquella'
+        url = 'https://github.com/openequella/birt-packages'
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        scm {
+          connection = 'scm:git:https://github.com/openequella/birt-packages.git'
+          developerConnection = 'scm:git:https://github.com/openequella/birt-packages.git'
+          url = 'https://github.com/openequella/birt-packages'
+        }
+      }
+    }
+  }
+}
+
+clean {
+  doLast {
+    frameworkFolder.deleteDir()
+    originalFile.delete()
+    file(artifactName).delete()
+  }
+}

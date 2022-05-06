@@ -1,0 +1,3 @@
+rootProject.name = 'openEquella-BIRT-packages'
+include 'birt-osgi'
+include 'birt-report-framework'
