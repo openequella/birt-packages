@@ -1,4 +1,5 @@
 # BIRT OSGI runtime library and Report Framework for openEquella
+
 openEquella requires the BIRT OSGI runtime library and BIRT Report Framework to support the integration with BIRT.
 However, the full packages of these two libraries are not available on Maven central, and they can only be downloaded
 from the [Eclipse BIRT download page](https://download.eclipse.org/birt/downloads/drops/). Historically, this issue was
@@ -11,10 +12,26 @@ library and the BIRT Report Framework respectively. However, there is no guarant
 perfectly with any future version of the BIRT OSGI runtime library and BIRT Report Framework.
 
 ## Relationship between the two sub-projects
+
 The Report Framework requires some Jars that are provided by the OSGI runtime library. Therefore, the OSGI runtime library
 must always be built before the Report Framework.
 
+## Setup
+
+Before building you need to first setup a gradle.properties. This can be done simply with:
+
+```
+cp gradle.properties.sample gradle.properties
+```
+
+The values in here will need to be setup properly if you plan to publish the artefacts to OSSRH. But
+even for local building you at least need them to have a value - so just copy the sample file to
+start with.
+
+(Details on publishing can be found in the 'Deploy' section.)
+
 ## Creating the BIRT OSGI runtime library
+
 The gradle build file in 'birt-osgi' includes two tasks which will create a ZIP file for the OSGI runtime library.
 * Download version 4.9.0 of the BIRT OSGI original ZIP file from the official download page.
 * Unzip the archive file to folder `/osgi`.
@@ -26,11 +43,12 @@ by appending below line to include the info of the compatibility Jar.
 
 The ZIP file will be produced by executing the task `buildBirtOsgi`.
 
- ```
-  -$ ./gradlew buildBirtOsgi
- ```
+```
+./gradlew buildBirtOsgi
+```
 
 ## Creating the BIRT Report Framework
+
 The gradle build file in 'birt-report-framework' includes two tasks which will create a ZIP file as the OSGI Report Framework.
 * Download version 4.9.0 of the BIRT Report Framework original ZIP file from the official download page.
 * Unzip the archive file to folder `/framework`.
@@ -47,34 +65,47 @@ The gradle build file in 'birt-report-framework' includes two tasks which will c
 
 The ZIP file will be produced by executing the task `buildBirtReportFramework`.
 
- ```
-  -$ ./gradlew buildBirtReportFramework
- ```
+```
+./gradlew buildBirtReportFramework
+```
 
 ## Generate the artifacts
+
 By running below command, the BIRT OSGI runtime library and Report Framework will be created under `birt-osgi` and `birt-report-framework`, respectively.
 
- ```
-  -$ ./gradlew build
- ```
+```
+./gradlew build
+```
 
 ## Clean the project
+
 By running below command, all files except `build.gradle` in the sub-projects will be deleted.
 
- ```
-  -$ ./gradlew clean
- ```
-## Deploying
-The artifacts are uploaded to [Sonatype OSSRH](https://oss.sonatype.org).
-Firstly, credentials must be supplied in gradle.properties.
+```
+./gradlew clean
+```
 
- ```
-  ossrhUsername=username
-  ossrhPassword=password
- ```
+## Deploying
+
+The artifacts are uploaded to [Sonatype OSSRH](https://oss.sonatype.org).
+Firstly, credentials must be supplied in `gradle.properties`.
+
+```
+ossrhUsername=username
+ossrhPassword=password
+```
 
 Then by running below command, the artifacts will be uploaded.
 
- ```
-  -$ ./gradlew publish
- ```
+```
+./gradlew publish
+```
+
+### Local
+
+If you wish to do you own build and use locally, you can publish to your local machine's maven
+repository (typically located at `~/.m2/repository`) with the command:
+
+```
+./gradlew publishToMavenLocal
+```
