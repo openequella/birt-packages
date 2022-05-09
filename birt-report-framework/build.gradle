@@ -1,6 +1,7 @@
 plugins {
   id 'base'
   id 'maven-publish'
+  id 'signing'
 }
 
 group 'com.github.openequella'
@@ -99,9 +100,29 @@ publishing {
           developerConnection = 'scm:git:https://github.com/openequella/birt-packages.git'
           url = 'https://github.com/openequella/birt-packages'
         }
+        developers {
+          developer {
+            id = developerId
+            name = developerName
+            email = developerEmail
+          }
+        }
       }
     }
   }
+  repositories {
+    maven {
+      url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+      credentials {
+        username = ossrhUsername
+        password = ossrhPassword
+      }
+    }
+  }
+}
+
+signing {
+  sign publishing.publications.birtReportFramework
 }
 
 clean {
