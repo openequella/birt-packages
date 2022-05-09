@@ -1,2 +1,8 @@
 ossrhUsername=username
 ossrhPassword=password
+developerId=yourID
+developerName=yourName
+developerEmail=yourEmail
+signing.keyId=key
+signing.password=password
+signing.secretKeyRingFile=file

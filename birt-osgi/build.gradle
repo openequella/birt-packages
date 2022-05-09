@@ -1,6 +1,7 @@
 plugins {
   id 'base'
   id 'maven-publish'
+  id 'signing'
 }
 
 group 'com.github.openequella'
@@ -92,6 +93,10 @@ publishing {
       }
     }
   }
+}
+
+signing {
+  sign publishing.publications.birtOsgi
 }
 
 clean {
