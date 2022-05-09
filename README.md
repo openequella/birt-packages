@@ -95,6 +95,22 @@ ossrhUsername=username
 ossrhPassword=password
 ```
 
+Secondly, update the developer details in `gradle.properties`. The details will be included in the generated POM files.
+
+```
+developerId=yourID
+developerName=yourName
+developerEmail=yourEmail
+```
+
+Thirdly, update the signing details in `gradle.properties`. Please follow this [guide](https://central.sonatype.org/publish/requirements/gpg/) to generate the signing key.
+
+```
+signing.keyId=key
+signing.password=password
+signing.secretKeyRingFile=file
+```
+
 Then by running below command, the artifacts will be uploaded.
 
 ```
