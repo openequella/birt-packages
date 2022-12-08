@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.github.openequella'
-version '4.9.0'
+version '4.9.1'
 
 final frameworkFolder = file("./framework")
 final osgiJarFolder = file("../birt-osgi/osgi/ReportEngine/platform/plugins")
@@ -41,7 +41,11 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
       'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar',
       'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar',
       'org.apache.batik.i18n_1.14.0.v20210324-0332.jar',
-      'org.eclipse.osgi_3.17.200.v20220215-2237.jar'
+      'org.eclipse.osgi_3.17.200.v20220215-2237.jar',
+      'org.eclipse.emf.ecore_2.26.0.v20220123-0838.jar',
+      'org.eclipse.emf.common_2.24.0.v20220123-0838.jar',
+      'org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar',
+      'org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar',
     ].each {
       f ->
         copy {
