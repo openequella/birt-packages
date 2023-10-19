@@ -14,6 +14,16 @@ final originalFile = file("framework.zip")
 
 final artifactName = "${project.name}-${project.version}.zip"
 
+class OSGIJar {
+  File path
+  String name
+
+  OSGIJar(File path, String name) {
+        this.path = path
+        this.name = name
+    }
+}
+
 task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
   doFirst {
     println("Download the original BIRT Report Framework package")
@@ -34,10 +44,12 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
     }
 
     println("Copy required Jars from the BIRT OSGI package")
-    [
+    final jars = [
+      'org.eclipse.datatools.connectivity_1.14.102.201911250848.jar',
       'org.eclipse.datatools.connectivity.oda_3.6.101.201811012051.jar',
       'org.eclipse.datatools.connectivity.oda.consumer_3.4.101.201811012051.jar',
       'org.eclipse.equinox.common_3.16.0.v20220211-2322.jar',
+      'org.eclipse.equinox.preferences_3.9.100.v20211021-1418.jar',
       'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar',
       'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar',
       'org.apache.batik.i18n_1.14.0.v20210324-0332.jar',
@@ -46,11 +58,18 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
       'org.eclipse.emf.common_2.24.0.v20220123-0838.jar',
       'org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar',
       'org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar',
-    ].each {
-      f ->
+    ].collect { name -> new OSGIJar(osgiJarFolder, name) }
+
+    final nestedJars = [
+      new OSGIJar(file("${osgiJarFolder.absolutePath}/org.eclipse.birt.report.data.oda.jdbc_4.9.0.v202203150031"), 'oda-jdbc.jar')
+    ]
+
+    (jars + nestedJars)
+      .each {
+      jar ->
         copy {
-          from osgiJarFolder
-          include f
+          from jar.path
+          include jar.name
           into frameworkFolder
         }
     }
