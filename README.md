@@ -53,13 +53,16 @@ The gradle build file in 'birt-report-framework' includes two tasks which will c
 * Download version 4.9.0 of the BIRT Report Framework original ZIP file from the official download page.
 * Unzip the archive file to folder `/framework`.
 * Copy Jars listed below from the BIRT OSGI sub-project to `/framework`.
+  * 'org.eclipse.datatools.connectivity_1.14.102.201911250848.jar'
   * 'org.eclipse.datatools.connectivity.oda_3.6.101.201811012051.jar'
   * 'org.eclipse.datatools.connectivity.oda.consumer_3.4.101.201811012051.jar'
   * 'org.eclipse.equinox.common_3.16.0.v20220211-2322.jar'
+  * 'org.eclipse.equinox.preferences_3.9.100.v20211021-1418.jar'
   * 'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar'
   * 'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar'
   * 'org.apache.batik.i18n_1.14.0.v20210324-0332.jar'
   * 'org.eclipse.osgi_3.17.200.v20220215-2237.jar'
+  * 'org.eclipse.birt.report.data.oda.jdbc_4.9.0.v202203150031/oda-jdbc.jar'
 * Extract `Tidy.jar` from `org.eclipse.birt.report.engine_4.9.0.v202203150031.jar` which is in the BIRT OSGI sub-project, and copy to `/framework`.
 * Compress `/framework` to a ZIP file named `birt-report-framework-${project.version}`.
 
