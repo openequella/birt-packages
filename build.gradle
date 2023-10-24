@@ -4,6 +4,6 @@ plugins {
 }
 
 group 'com.github.openequella'
-version '4.9.1'
+version '4.9.2'
 
 build.dependsOn("birt-osgi:buildBirtOsgi", "birt-report-framework:buildBirtReportFramework")
