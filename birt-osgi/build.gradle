@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.github.openequella'
-version '4.9.2'
+version '4.9.3'
 
 final osgiFolder = file("./osgi")
 final reportEngineFolder = file("${osgiFolder}/ReportEngine")
