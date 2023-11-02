@@ -58,6 +58,8 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
       'org.eclipse.emf.common_2.24.0.v20220123-0838.jar',
       'org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar',
       'org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar',
+      'org.eclipse.birt.report.engine.emitter.config.excel_4.9.0.v202203150031.jar',
+      'org.eclipse.birt.report.engine.emitter.prototype.excel_4.9.0.v202203150031.jar'
     ].collect { name -> new OSGIJar(osgiJarFolder, name) }
 
     final nestedJars = [
