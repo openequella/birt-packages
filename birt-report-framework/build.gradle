@@ -45,21 +45,21 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
 
     println("Copy required Jars from the BIRT OSGI package")
     final jars = [
+      'org.apache.batik.i18n_1.14.0.v20210324-0332.jar',
+      'org.eclipse.birt.report.engine.emitter.config.excel_4.9.0.v202203150031.jar',
+      'org.eclipse.birt.report.engine.emitter.prototype.excel_4.9.0.v202203150031.jar',
+      'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar',
       'org.eclipse.datatools.connectivity_1.14.102.201911250848.jar',
       'org.eclipse.datatools.connectivity.oda_3.6.101.201811012051.jar',
       'org.eclipse.datatools.connectivity.oda.consumer_3.4.101.201811012051.jar',
+      'org.eclipse.emf.common_2.24.0.v20220123-0838.jar',
+      'org.eclipse.emf.ecore_2.26.0.v20220123-0838.jar',
+      'org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar',
+      'org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar',
       'org.eclipse.equinox.common_3.16.0.v20220211-2322.jar',
       'org.eclipse.equinox.preferences_3.9.100.v20211021-1418.jar',
       'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar',
-      'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar',
-      'org.apache.batik.i18n_1.14.0.v20210324-0332.jar',
       'org.eclipse.osgi_3.17.200.v20220215-2237.jar',
-      'org.eclipse.emf.ecore_2.26.0.v20220123-0838.jar',
-      'org.eclipse.emf.common_2.24.0.v20220123-0838.jar',
-      'org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar',
-      'org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar',
-      'org.eclipse.birt.report.engine.emitter.config.excel_4.9.0.v202203150031.jar',
-      'org.eclipse.birt.report.engine.emitter.prototype.excel_4.9.0.v202203150031.jar'
     ].collect { name -> new OSGIJar(osgiJarFolder, name) }
 
     final nestedJars = [
