@@ -6,7 +6,7 @@ from the [Eclipse BIRT download page](https://download.eclipse.org/birt/download
 solved by downloading the full packages, adding a variety of tweaks to make the packages work with oEQ, and publishing
 to remote repository. Unfortunately, the knowledge of what tweaks were needed and how to add them was lost. 
 
-As a result, above manual work has been done again with version 4.9.0 of the two libraries. And all the steps required to
+As a result, above manual work has been done again with version 4.16.0 of the two libraries. And all the steps required to
 make the libraries work with oEQ are captured in this project, which uses two sub-projects to build the BIRT OSGI runtime 
 library and the BIRT Report Framework respectively. However, there is no guarantee that the steps described below will work
 perfectly with any future version of the BIRT OSGI runtime library and BIRT Report Framework.
@@ -33,12 +33,8 @@ start with.
 ## Creating the BIRT OSGI runtime library
 
 The gradle build file in 'birt-osgi' includes two tasks which will create a ZIP file for the OSGI runtime library.
-* Download version 4.9.0 of the BIRT OSGI original ZIP file from the official download page.
+* Download version 4.16.0 of the BIRT OSGI original ZIP file from the official download page.
 * Unzip the archive file to folder `/osgi`.
-* Download the BIRT compatibility Jar from Maven central to `/osgi/ReportEngine/platform/plugins`. The version is pinned to 1.2.500.
-* Update file 'bundles.info' in `osgi/ReportEngine/platform/configuration/org.eclipse.equinox.simpleconfigurator`
-by appending below line to include the info of the compatibility Jar.
-  * org.eclipse.osgi.compatibility.state,1.2.500.v20210730-0750,plugins/org.eclipse.osgi.compatibility.state-1.2.500.jar,4,false
 * Compress `/osgi` to a ZIP file named `birt-osgi-${project.version}`.
 
 The ZIP file will be produced by executing the task `buildBirtOsgi`.
@@ -50,20 +46,26 @@ The ZIP file will be produced by executing the task `buildBirtOsgi`.
 ## Creating the BIRT Report Framework
 
 The gradle build file in 'birt-report-framework' includes two tasks which will create a ZIP file as the OSGI Report Framework.
-* Download version 4.9.0 of the BIRT Report Framework original ZIP file from the official download page.
+* Download version 4.6.0 of the BIRT Report Framework original ZIP file from the official download page.
 * Unzip the archive file to folder `/framework`.
 * Copy Jars listed below from the BIRT OSGI sub-project to `/framework`.
-  * 'org.eclipse.datatools.connectivity_1.14.102.201911250848.jar'
-  * 'org.eclipse.datatools.connectivity.oda_3.6.101.201811012051.jar'
-  * 'org.eclipse.datatools.connectivity.oda.consumer_3.4.101.201811012051.jar'
-  * 'org.eclipse.equinox.common_3.16.0.v20220211-2322.jar'
-  * 'org.eclipse.equinox.preferences_3.9.100.v20211021-1418.jar'
-  * 'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar'
-  * 'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar'
   * 'org.apache.batik.i18n_1.14.0.v20210324-0332.jar'
-  * 'org.eclipse.osgi_3.17.200.v20220215-2237.jar'
-  * 'org.eclipse.birt.report.data.oda.jdbc_4.9.0.v202203150031/oda-jdbc.jar'
-* Extract `Tidy.jar` from `org.eclipse.birt.report.engine_4.9.0.v202203150031.jar` which is in the BIRT OSGI sub-project, and copy to `/framework`.
+  * 'org.eclipse.birt.report.engine.emitter.config.excel_4.16.0.v202406141054.jar'
+  * 'org.eclipse.birt.report.engine.emitter.prototype.excel_4.16.0.v202406141054.jar'
+  * 'org.eclipse.core.runtime_3.31.100.v20240524-2010.jar'
+  * 'org.eclipse.datatools.connectivity_1.15.0.202311071249.jar'
+  * 'org.eclipse.datatools.connectivity.oda_3.7.0.202311071249.jar'
+  * 'org.eclipse.datatools.connectivity.oda.consumer_3.5.0.202311071249.jar'
+  * 'org.eclipse.emf.common_2.30.0.v20240314-0928.jar'
+  * 'org.eclipse.emf.ecore_2.36.0.v20240203-0859.jar'
+  * 'org.eclipse.emf.ecore.xmi_2.37.0.v20231208-1346.jar'
+  * 'org.eclipse.emf.ecore.change_2.16.0.v20231208-1346.jar'
+  * 'org.eclipse.equinox.common_3.19.100.v20240524-2011.jar'
+  * 'org.eclipse.equinox.preferences_3.11.100.v20240327-0645.jar'
+  * 'org.eclipse.equinox.registry_3.12.100.v20240524-2011.jar'
+  * 'org.eclipse.osgi_3.20.0.v20240509-1421.jar'
+  * 'org.eclipse.birt.report.data.oda.jdbc_4.16.0.v202406141054/oda-jdbc.jar'
+* Extract `Tidy.jar` from `org.eclipse.birt.report.engine_4.16.0.v202406141054.jar` which is in the BIRT OSGI sub-project, and copy to `/framework`.
 * Compress `/framework` to a ZIP file named `birt-report-framework-${project.version}`.
 
 The ZIP file will be produced by executing the task `buildBirtReportFramework`.

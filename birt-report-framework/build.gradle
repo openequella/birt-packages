@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.github.openequella'
-version '4.9.3'
+version '4.16.0'
 
 final frameworkFolder = file("./framework")
 final osgiJarFolder = file("../birt-osgi/osgi/ReportEngine/platform/plugins")
@@ -27,8 +27,7 @@ class OSGIJar {
 task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
   doFirst {
     println("Download the original BIRT Report Framework package")
-    new URL("https://download.eclipse.org/birt/downloads/drops/R-R1-4.9.0-202203161719/birt-report-framework-4.9.0-20220315.zip").withInputStream {
-      originalFile << it
+    new URI("https://www.eclipse.org/downloads/download.php?file=/birt/updates/release/4.16.0/downloads/birt-report-framework-sdk-4.16.0-202406141054.zip&r=1").toURL().withInputStream {      originalFile << it
     }
 
     println("Unzip the BIRT Report Framework package")
@@ -45,25 +44,25 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
 
     println("Copy required Jars from the BIRT OSGI package")
     final jars = [
-      'org.apache.batik.i18n_1.14.0.v20210324-0332.jar',
-      'org.eclipse.birt.report.engine.emitter.config.excel_4.9.0.v202203150031.jar',
-      'org.eclipse.birt.report.engine.emitter.prototype.excel_4.9.0.v202203150031.jar',
-      'org.eclipse.core.runtime_3.24.100.v20220211-2001.jar',
-      'org.eclipse.datatools.connectivity_1.14.102.201911250848.jar',
-      'org.eclipse.datatools.connectivity.oda_3.6.101.201811012051.jar',
-      'org.eclipse.datatools.connectivity.oda.consumer_3.4.101.201811012051.jar',
-      'org.eclipse.emf.common_2.24.0.v20220123-0838.jar',
-      'org.eclipse.emf.ecore_2.26.0.v20220123-0838.jar',
-      'org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar',
-      'org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar',
-      'org.eclipse.equinox.common_3.16.0.v20220211-2322.jar',
-      'org.eclipse.equinox.preferences_3.9.100.v20211021-1418.jar',
-      'org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar',
-      'org.eclipse.osgi_3.17.200.v20220215-2237.jar',
+      'org.apache.batik.i18n_1.17.0.v20231215-1130.jar',
+      'org.eclipse.birt.report.engine.emitter.config.excel_4.16.0.v202406141054.jar',
+      'org.eclipse.birt.report.engine.emitter.prototype.excel_4.16.0.v202406141054.jar',
+      'org.eclipse.core.runtime_3.31.100.v20240524-2010.jar',
+      'org.eclipse.datatools.connectivity_1.15.0.202311071249.jar',
+      'org.eclipse.datatools.connectivity.oda_3.7.0.202311071249.jar',
+      'org.eclipse.datatools.connectivity.oda.consumer_3.5.0.202311071249.jar',
+      'org.eclipse.emf.common_2.30.0.v20240314-0928.jar',
+      'org.eclipse.emf.ecore_2.36.0.v20240203-0859.jar',
+      'org.eclipse.emf.ecore.xmi_2.37.0.v20231208-1346.jar',
+      'org.eclipse.emf.ecore.change_2.16.0.v20231208-1346.jar',
+      'org.eclipse.equinox.common_3.19.100.v20240524-2011.jar',
+      'org.eclipse.equinox.preferences_3.11.100.v20240327-0645.jar',
+      'org.eclipse.equinox.registry_3.12.100.v20240524-2011.jar',
+      'org.eclipse.osgi_3.20.0.v20240509-1421.jar',
     ].collect { name -> new OSGIJar(osgiJarFolder, name) }
 
     final nestedJars = [
-      new OSGIJar(file("${osgiJarFolder.absolutePath}/org.eclipse.birt.report.data.oda.jdbc_4.9.0.v202203150031"), 'oda-jdbc.jar')
+      new OSGIJar(file("${osgiJarFolder.absolutePath}/org.eclipse.birt.report.data.oda.jdbc_4.16.0.v202406141054"), 'oda-jdbc.jar')
     ]
 
     (jars + nestedJars)
@@ -78,7 +77,7 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
 
     println("Extract Tidy.jar from one of the Report Engine Jars and copy to here")
     copy {
-      from zipTree(file("${osgiJarFolder}/org.eclipse.birt.report.engine_4.9.0.v202203150031.jar")).matching {
+      from zipTree(file("${osgiJarFolder}/org.eclipse.birt.report.engine_4.16.0.v202406141054.jar")).matching {
         include 'lib/Tidy.jar'
         eachFile { f ->
           f.path = f.path.replaceFirst("lib", '') // Only copy the Jar, not the folder.
@@ -94,9 +93,9 @@ task prepareBirtReportFramework(description: 'Prepare BIRT Report Framework') {
 }
 
 task buildBirtReportFramework(description: 'Create the openEquella specific BIRT Report Framework', type: Zip) {
-  archiveName artifactName
+  archiveFileName = artifactName
   from fileTree(frameworkFolder)
-  destinationDir file("./")
+  destinationDirectory = file("./")
 
   doLast {
     println("BIRT Report Framework has been successfully created.")
