@@ -46,7 +46,7 @@ The ZIP file will be produced by executing the task `buildBirtOsgi`.
 ## Creating the BIRT Report Framework
 
 The gradle build file in 'birt-report-framework' includes two tasks which will create a ZIP file as the OSGI Report Framework.
-* Download version 4.6.0 of the BIRT Report Framework original ZIP file from the official download page.
+* Download version 4.16.0 of the BIRT Report Framework original ZIP file from the official download page.
 * Unzip the archive file to folder `/framework`.
 * Copy Jars listed below from the BIRT OSGI sub-project to `/framework`.
   * 'org.apache.batik.i18n_1.14.0.v20210324-0332.jar'
