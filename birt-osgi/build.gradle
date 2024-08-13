@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.github.openequella'
-version '4.9.3'
+version '4.16.0'
 
 final osgiFolder = file("./osgi")
 final reportEngineFolder = file("${osgiFolder}/ReportEngine")
@@ -19,7 +19,7 @@ final artifactName = "${project.name}-${project.version}.zip"
 task prepareBirtOsgi(description: 'Prepare BIRT OSGI') {
   doFirst {
     println("Download the original BIRT OSGI package")
-    new URL("https://download.eclipse.org/birt/downloads/drops/R-R1-4.9.0-202203161719/birt-runtime-osgi-4.9.0-20220315.zip").withInputStream {
+    new URI("https://www.eclipse.org/downloads/download.php?file=/birt/updates/release/4.16.0/downloads/birt-runtime-osgi-4.16.0-202406141054.zip&r=1").toURL().withInputStream {
       originalFile << it
     }
 
@@ -28,24 +28,15 @@ task prepareBirtOsgi(description: 'Prepare BIRT OSGI') {
       from zipTree(originalFile)
       into osgiFolder
     }
-
-    println("Download the OSGI compatibility Jar")
-    new URL("https://repo1.maven.org/maven2/org/eclipse/platform/org.eclipse.osgi.compatibility.state/1.2.500/org.eclipse.osgi.compatibility.state-1.2.500.jar").withInputStream {
-      compatibilityJar << it
-    }
-
-    println("Update file 'bundles.info'")
-    file("${platformFolder}/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info")
-      .append("org.eclipse.osgi.compatibility.state,1.2.500.v20210730-0750,plugins/org.eclipse.osgi.compatibility.state-1.2.500.jar,4,false")
   }
 }
 
 task buildBirtOsgi(description: 'Create the openEquella specific BIRT OSGI library', type: Zip) {
-  archiveName artifactName
+  archiveFileName = artifactName
   from fileTree(reportEngineFolder)
   exclude '/samples'
   exclude '/genReport.*'
-  destinationDir file("./")
+  destinationDirectory = file("./")
 
   doLast {
     println("BIRT OSGI library has been successfully created.")
