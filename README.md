@@ -92,8 +92,11 @@ By running below command, all files except `build.gradle` in the sub-projects wi
 
 ## Deploying
 
-The artifacts are uploaded to [Sonatype OSSRH](https://oss.sonatype.org).
-Firstly, credentials must be supplied in `gradle.properties`.
+The artifacts are uploaded to legacy [Sonatype OSSRH](https://oss.sonatype.org) where a staging repository will be created for the artifacts. 
+Then, you need to manually verify and release the content to Maven central. To upload the artifacts, follow the steps below:
+
+Firstly, you must obtain an OSSRH token by following this [instruction](https://central.sonatype.org/publish/generate-token/)
+and then supply the token in `gradle.properties`.
 
 ```
 ossrhUsername=username
